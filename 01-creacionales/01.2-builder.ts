@@ -11,6 +11,8 @@
  * * que lo componen.
  */
 
+import { COLORS } from "../helpers/colors.ts";
+
 // import { COLORS } from '../helpers/colors.ts';
 
 
@@ -38,7 +40,7 @@
  */
 
 //! Solución
-import { red } from "https://deno.land/std@0.224.0/fmt/colors.ts";
+// import { red } from "https://deno.land/std@0.224.0/fmt/colors.ts";
 
 
 class QueryBuilder {
@@ -93,8 +95,6 @@ class QueryBuilder {
     return `Select ${ fields } from ${ this.table } ${whereClause} ${orderByClause} ${limitClause}`;
 
   }
-
-
 }
 
 function main() {
@@ -106,7 +106,7 @@ function main() {
     .limit(10)
     .execute();
 
-  console.log(red('Consulta: '));
+  console.log('%cConsulta: ', COLORS.red);
   console.log(usersQuery);
 }
 
