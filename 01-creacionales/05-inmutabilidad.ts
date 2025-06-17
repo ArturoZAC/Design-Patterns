@@ -62,6 +62,15 @@ class CodeEditorHistory {
     this.currentIndex++;
   }
 
+  undo(): CodeEditorState | null {
+    if( this.currentIndex > 0 ) {
+      this.currentIndex--;
+      return this.history[this.currentIndex];
+    }
+
+    return null;
+  }
+
   redo (): CodeEditorState | null {
     if ( this.currentIndex < this.history.length -1 ) {
       this.currentIndex++;
@@ -72,3 +81,41 @@ class CodeEditorHistory {
   }
 
 }
+
+function main() {
+
+  const history = new CodeEditorHistory();
+  let editorState = new CodeEditorState('console.log("Hello, World!");', 2, false);
+
+  history.save(editorState);
+
+  console.log('%cEstado inicial', COLORS.blue);
+  editorState.displayState();
+
+  editorState = editorState.copyWith({
+    content: 'console.log("Hello, TypeScript!"); \nconsole.log("Inmutabilidad es genial!");',
+    cursorPosition: 3,
+    unsavedChanges: true
+  });
+
+  history.save(editorState);
+
+  console.log('%cDespués de cambios', COLORS.blue);
+  editorState.displayState();
+
+  console.log('\n%cDespués de mover el cursor', COLORS.blue);
+  editorState = editorState.copyWith({ cursorPosition: 5 });
+  history.save(editorState);
+  editorState.displayState();
+
+  console.log('\n%cDespués del Undo', COLORS.blue);
+  editorState = history.undo()!;
+  editorState.displayState(); 
+
+  console.log('\n%cDespues del Redo', COLORS.blue);
+  editorState = history.redo()!;
+  editorState.displayState();
+  
+}
+
+main();
