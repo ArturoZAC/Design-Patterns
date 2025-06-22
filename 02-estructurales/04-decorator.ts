@@ -12,13 +12,15 @@
  * https://refactoring.guru/es/design-patterns/decorator
  */
 
+import { COLORS } from "../helpers/colors.ts";
+
 interface Notification {
   send( message: string ): void;
 }
 
 class BasicNotification implements Notification {
   send(message: string): void {
-    console.log(`Enviando notificacion basica: ${ message }`);
+    console.log(`%cEnviando notificacion basica: %c${ message }`, COLORS.blue, COLORS.white);
   }
 }
 
@@ -36,7 +38,7 @@ abstract class NotificationDecorator implements Notification {
 
 class EmailDecorator extends NotificationDecorator {
   private sendEmail( message: string ){
-    console.log(`Enviando notificacion por correo electronico: ${ message}`);
+    console.log(`%cEnviando notificacion por correo electronico: %c${ message}`, COLORS.green, COLORS.white);
   }
 
   override send(message: string): void {
@@ -47,11 +49,22 @@ class EmailDecorator extends NotificationDecorator {
 
 class SMSDecorator extends NotificationDecorator {
   private sendSMS( message: string ){
-    console.log(`Enviando notificacion por SMS: ${ message}`);
+    console.log(`%cEnviando notificacion por SMS: %c${ message}`, COLORS.red, COLORS.white);
   }
 
   override send(message: string): void {
     super.send( message );
     this.sendSMS( message );
   }
+};
+
+function main() {
+  let notification: Notification = new BasicNotification();
+
+  notification = new EmailDecorator(notification);
+  notification = new SMSDecorator(notification);
+
+  notification.send('Alerta de sistema');
 }
+
+main();

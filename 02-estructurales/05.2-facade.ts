@@ -58,18 +58,36 @@ class Memory {
 // 2. Clase Facade - ComputerFacade
 
 class ComputerFacade {
+  // // TODO: Agregar los atributos necesarios CPU, Memory y HardDrive
+  // private cpu: CPU;
+  // private memory: Memory;
+  // private hardDrive: HardDrive;
+
+  // // TODO: Agregar el constructor para instanciar los atributos CPU, Memory y HardDrive
+  // constructor(cpu: CPU, memory: Memory, hardDrive: HardDrive) {
+  //   this.cpu = cpu;
+  //   this.memory = memory;
+  //   this.hardDrive = hardDrive;
+  // }
+
   // TODO: Agregar los atributos necesarios CPU, Memory y HardDrive
+  // private cpu: CPU;
+  // private memory: Memory;
+  // private hardDrive: HardDrive;
 
   // TODO: Agregar el constructor para instanciar los atributos CPU, Memory y HardDrive
-  constructor() {}
+  constructor(private cpu: CPU = new CPU(), private memory: Memory = new Memory(), private hardDrive: HardDrive = new HardDrive()) {}
 
   startComputer(): void {
     console.log('\n%cIniciando la computadora...', COLORS.cyan);
 
     // TODO: ejecutar las operaciones necesarias para encender la computadora
     // 1. Cargar el sistema operativo en la memoria - memory.load(0, hardDrive.read(0, 1024))
+    this.memory.load(0, this.hardDrive.read(0, 1024))
     // 2. Saltar a la posición de memoria 0 - cpu.jump(0)
+    this.cpu.jump(0);
     // 3. Ejecutar las instrucciones del CPU - cpu.execute()
+    this.cpu.execute();
 
     console.log('Computadora lista para usar.\n');
   }
@@ -80,9 +98,11 @@ class ComputerFacade {
 
     // TODO: ejecutar las operaciones necesarias para apagar la computadora
     // 1. Detener las operaciones del CPU - cpu.stopOperations()
+    this.cpu.stopOperations();
     // 2. Liberar la memoria - memory.free()
+    this.memory.free();
     // 3. Cerrar el disco duro - hardDrive.close()
-
+    this.hardDrive.close();
     console.log('Computadora apagada.\n');
   }
 }
@@ -91,7 +111,7 @@ class ComputerFacade {
 // TODO: Aquí no hay nada que hacer, debe de encender la computadora y apagarla sin problemas
 function main() {
   const computer = new ComputerFacade();
-
+  // new CPU, new Memory, new HardDrive
   // Encender la computadora usando la fachada
   computer.startComputer();
 
