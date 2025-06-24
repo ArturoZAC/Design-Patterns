@@ -24,7 +24,7 @@ interface Command {
 class TextEditor {
   private text: string = '';
   private clipboard: string = '';
-  private history: string[] = [];
+  private history: string[] = []; 
 
   // Agregar texto al editor
   type(text: string): void {
@@ -70,18 +70,39 @@ class CopyCommand implements Command {
   private editor: TextEditor;
 
   // TODO: Inyectar el editor en el constructor y el método execute con la acción respectiva
+  constructor( editor: TextEditor ){
+    this.editor = editor;
+  }
+
+  execute(): void {
+    this.editor.copy();
+  }
 }
 
 class PasteCommand implements Command {
   private editor: TextEditor;
 
-  // TODO: Inyectar el editor en el constructor y el método execute con la acción respectiva
+  // TODO: Inyectar el editor en el constructor y el método execute con la acción 
+  constructor( editor: TextEditor ){
+    this.editor = editor;
+  }
+
+  execute(): void {
+    this.editor.paste();
+  }
 }
 
 class UndoCommand implements Command {
   private editor: TextEditor;
 
   // TODO: Inyectar el editor en el constructor y el método execute con la acción respectiva
+  constructor( editor: TextEditor ){
+    this.editor = editor;
+  }
+
+  execute(): void {
+    this.editor.undo();
+  }
 }
 
 // 4. Clase Cliente - Toolbar
@@ -91,13 +112,17 @@ class Toolbar {
 
   setCommand(button: string, command: Command): void {
     // TODO: Asignar el comando al botón correspondiente
+    this.commands[button] = command;
   }
 
   clickButton(button: string): void {
     //TODO: Ejecutar el comando correspondiente al botón
+    if( this.commands[button] ){
+      return this.commands[button].execute();
+    }
 
     // TODO: Manejar el caso en que no haya un comando asignado al botón
-    console.error(`No hay un comando asignado al botón "${button}"`);
+    console.error(`%cNo hay un comando asignado al botón "${button}"`, COLORS.red);
   }
 }
 
