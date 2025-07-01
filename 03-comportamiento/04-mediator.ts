@@ -9,3 +9,53 @@
  *
  * https://refactoring.guru/es/design-patterns/mediator
  */
+
+import { COLORS } from "../helpers/colors.ts";
+
+
+class ChatRoom {
+
+  private users: User[] = [];
+  public title: string;
+
+  constructor(title: string) {
+    this.title = title;
+  }
+
+  addUser(user: User) {
+    this.users.push(user);
+  }
+
+  sendMessage(sender: User, message: string): void {
+    const usersToSend = this.users.filter((user) => user !== sender);
+
+    for (const user of usersToSend) {
+      user.receiveMessage( sender, message );
+    }
+  }
+}
+
+class User {
+  private username: string;
+  private chatRoom: ChatRoom;
+
+  constructor(username: string, chatRoom: ChatRoom) {
+    this.username = username;
+    this.chatRoom = chatRoom;
+  }
+
+  sendMessage(message: string): void {
+    console.log(`\n\n\n%c${this.username} envía: %c${message}`,
+      COLORS.blue,
+      COLORS.white
+    );
+    this.chatRoom.sendMessage(this, message);
+  }
+
+  public receiveMessage = ( sender: User,  message: string ): void => {
+    console.log(`\n\n\n%c${ this.username } recibe de ${ sender.username }: %c${ message }`,
+      COLORS.blue,
+      COLORS.white
+    );
+  }
+}
