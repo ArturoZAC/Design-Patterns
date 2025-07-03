@@ -42,10 +42,12 @@ class User {
   constructor(username: string, chatRoom: ChatRoom) {
     this.username = username;
     this.chatRoom = chatRoom;
+
+    chatRoom.addUser(this);
   }
 
   sendMessage(message: string): void {
-    console.log(`\n\n\n%c${this.username} envía: %c${message}`,
+    console.log(`%c${this.username} envía: %c${message}`,
       COLORS.blue,
       COLORS.white
     );
@@ -53,9 +55,26 @@ class User {
   }
 
   public receiveMessage = ( sender: User,  message: string ): void => {
-    console.log(`\n\n\n%c${ this.username } recibe de ${ sender.username }: %c${ message }`,
+    console.log(`%c${ this.username } recibe de ${ sender.username }: %c${ message }`,
       COLORS.blue,
       COLORS.white
     );
   }
 }
+
+function main() {
+  const chatRoom = new ChatRoom('Grupo de trabajo');
+
+  const user1 = new User('Fernando', chatRoom);
+  const user2 = new User('Gastón', chatRoom);
+  const user3 = new User('Mariangel', chatRoom); 
+
+  user1.sendMessage('Hola a todos');
+  console.log('\n');
+  user2.sendMessage('Hola Fernando, ¿Cómo estas?');
+  console.log('\n');
+  user3.sendMessage('Hola Fernando, Gastón, ¿Cómo están?');
+  console.log('\n');
+}
+
+main();
