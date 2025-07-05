@@ -27,12 +27,13 @@ class WeatherStation {
   // observers = [];
   // weatherData = 'Soleado';
   private observers: Observer[] = [];
-  private weatherData = 'Soleado';
+  private weatherData: string = 'Soleado';
 
   // Agregar un Observer
   subscribe(observer: Observer): void {
     // TODO: añadir observer
     this.observers.push(observer);
+    // observer.update(this.weatherData);
     console.log(
       '%cNueva aplicación suscrita al sistema meteorológico.',
       COLORS.green
@@ -52,14 +53,15 @@ class WeatherStation {
     
     // TODO: actualizar clima y notificar a todos los Observers con el método notifyObservers
     this.weatherData = weatherData;
+    this.notifyObservers();
   }
 
   // Notificar a todos los Observers
   private notifyObservers(): void {
     // TODO: implementar método
-    console.log(
-      ''
-    );
+    for (const observer of this.observers) {
+      observer.update(this.weatherData);
+    }
       
   }
 }
